@@ -20,6 +20,16 @@ namespace TankGame
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
 
+        public int ScreenWidth
+        {
+            get { return GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width; }
+        }
+
+        public int ScreenHeight
+        {
+            get { return GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; }
+        }
+
         public List<Entity> children = new List<Entity>();
         public Game1()
         {
@@ -38,7 +48,7 @@ namespace TankGame
         {
             Tank tank = new Tank();
             children.Add(tank);
-            
+
             foreach (Entity entity in children)
             {
                 entity.Initialize();
@@ -56,9 +66,9 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            foreach (Entity entity in children)
+            for (int i = 0; i < children.Count; i++)
             {
-                entity.LoadContent();
+                children[i].LoadContent();
             }
         }
 
@@ -78,9 +88,13 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            foreach (Entity entity in children)
+            for (int i = 0; i < children.Count; i++)
             {
-                entity.Update(gameTime);
+                children[i].Update(gameTime);
+                if (!children[i].Alive)
+                {
+                    children.Remove(children[i]);
+                }
             }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -100,9 +114,9 @@ namespace TankGame
             GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
-            foreach (Entity entity in children)
+            for (int i = 0; i < children.Count; i++)
             {
-                entity.Draw(gameTime);
+                children[i].Draw(gameTime);
             }
             spriteBatch.End();
 
