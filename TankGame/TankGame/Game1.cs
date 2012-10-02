@@ -19,6 +19,20 @@ namespace TankGame
         public static Game1 Instance;
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+        private Tank tank;
+        private AITank aiTank;
+
+        public AITank AITank
+        {
+            get { return aiTank; }
+            set { aiTank = value; }
+        }
+
+        public Tank Tank
+        {
+            get { return tank; }
+            set { tank = value; }
+        }
 
         public List<Entity> children = new List<Entity>();
         public Game1()
@@ -36,8 +50,11 @@ namespace TankGame
         /// </summary>
         protected override void Initialize()
         {
-            Tank tank = new Tank();
+            tank = new Tank();
+            aiTank = new AITank();
+            aiTank.pos = new Vector2(600, 400);
             children.Add(tank);
+            children.Add(aiTank);
             
             foreach (Entity entity in children)
             {

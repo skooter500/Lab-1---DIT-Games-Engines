@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace TankGame
 {
-    class Tank : Entity
+    public class Tank : Entity
     {
         public override void LoadContent()
         {
