@@ -64,12 +64,9 @@ namespace TankGame
             aiTank = new AITank();
             aiTank.pos = new Vector2(600, 400);
             children.Add(tank);
-<<<<<<< HEAD
+
             children.Add(aiTank);
             
-=======
-
->>>>>>> Solution
             foreach (Entity entity in children)
             {
                 entity.Initialize();

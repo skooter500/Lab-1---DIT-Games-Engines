@@ -16,6 +16,12 @@ namespace TankGame
         float targetRotation = 0.0f;
         bool rotating = false;
         Vector2 basis = new Vector2(0, -1);
+
+        // Fire 10 bullets per second
+        float fireRate = 10.0f;
+        float elapsed = 100.0f; // Set this to a high number so it lets me start firing straight away...
+
+
         public override void Initialize()
         {
             base.Initialize();
@@ -39,7 +45,7 @@ namespace TankGame
                 targetRotation = (float) Math.Acos(Vector2.Dot(basis, Vector2.Normalize(toTarget)));
                 if (toTarget.X < 0 )
                 {
-                    targetRotation = (MathHelper.Pi * 2.0f) - targetRotation;
+                    targetRotation = - targetRotation;
                 }
                 rotating = true;
             }
@@ -47,7 +53,6 @@ namespace TankGame
             {
                 rotating = false;
             }
-            float epsylon = 0.1f;
             float rotAmount = 1.0f;
             if (rotating)
             {
@@ -62,8 +67,27 @@ namespace TankGame
                 }
                 look.X = (float)Math.Sin(rotation);
                 look.Y = - (float)Math.Cos(rotation);
+                // Move in the direction I am rotated to
                 pos += look * speed * timeDelta;
+
+                // Is it time to firs a bullet
+                if (elapsed > (1.0f / fireRate))
+                {
+                    Bullet bullet = new Bullet();
+                    bullet.LoadContent();
+                    bullet.look = look;
+                    bullet.pos = pos + (look * (sprite.Height / 2));
+                    Game1.Instance.children.Add(bullet);
+                    elapsed = 0.0f;
+                }
+            }
+
+            elapsed += timeDelta;
+            if (elapsed >= 100.0f)
+            {
+                elapsed = 100.0f;
             }
         }
+
     }
 }
